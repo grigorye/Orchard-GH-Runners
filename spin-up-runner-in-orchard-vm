@@ -1,0 +1,43 @@
+#! /bin/bash
+
+set -x
+set -euo pipefail
+
+repo="$REPO"
+user="$USER"
+runner_name="$RUNNER_NAME"
+pat="$RUNNER_CFG_PAT"
+labels="$RUNNER_LABELS"
+
+fullName="$user"
+password="password"
+
+sudo sysadminctl \
+    -addUser "$user" \
+    -fullName "$fullName" \
+    -password "$password"
+
+runner_home="/Users/$user"
+
+# Hide the user from the login window.
+sudo dscl . create "$runner_home" IsHidden 1
+
+# Allow ssh for the user.
+sudo dseditgroup -o edit -a "$user" -t user com.apple.access_ssh
+
+# Make the user an admin.
+sudo dseditgroup -o edit -a "$user" -t user admin
+
+sudo cp -R actions-runner "$runner_home"/
+sudo chown -R "$user" "$runner_home"/actions-runner
+
+sudo -u "$user" "$runner_home"/actions-runner/config.sh \
+    --url "https://github.com/$repo" \
+    --pat "$pat" \
+    --name "$runner_name" \
+    --labels "$labels" \
+    --unattended \
+    --replace \
+    --disableupdate
+
+sudo --set-home --user="$user" "$runner_home"/actions-runner/run.sh &
