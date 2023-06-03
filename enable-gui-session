@@ -1,0 +1,40 @@
+#! /bin/bash
+
+set -x
+set -euo pipefail
+
+user="$USER"
+
+password="password"
+
+wd=$(dirname "$0")
+
+# # Allow GUI login for the user.
+# sudo dseditgroup -o edit -a "$user" -t user com.apple.access_loginwindow
+
+# Allow VNC connection for the user.
+sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart \
+    -configure -access -on -privs -all -users "$user"
+
+# Generate .vnc to be open by VNC viewer.
+vnc=$(mktemp /tmp/vnc.XXXXXX)
+"$wd"/vg "$user" "$password" >"$vnc"
+
+# Trigger interactive session by opening VNC connection for the user.
+vnc_viewer="/Applications/VNC Viewer.app/Contents/MacOS/vncviewer"
+
+test -e "$vnc_viewer"
+"$vnc_viewer" -config "$vnc" &
+vnc_viewer_pid=$!
+
+# Wait until the session is registered.
+user_id=$(id -u "$user")
+while true; do
+    sleep 1
+    if sudo launchctl print gui/"$user_id"; then
+        break
+    fi
+done
+
+# Kill the viewer as it's no longer needed.
+kill "$vnc_viewer_pid"
