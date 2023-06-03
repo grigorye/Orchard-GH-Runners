@@ -1,0 +1,47 @@
+#! /bin/bash
+
+set -x
+set -euo pipefail
+
+hostname=${RUNNER_HOSTNAME:-"$(hostname)"}
+pat="$RUNNER_CFG_PAT"
+variant="${ORCHARD_MACOS_VARIANT:-ventura-xcode:14.3}"
+labels="${RUNNER_LABELS:+$RUNNER_LABELS,}hosted-on-$hostname"
+runners_per_repo="${RUNNERS_PER_REPO:-4}"
+
+repos=("$@")
+
+base_image="ghcr.io/cirruslabs/macos-$variant"
+# base_image="$variant"
+variant_name=$(echo "$variant" | tr ':' '-')
+base_name="$variant_name-$(date +%Y%m%d-%H%M%S)"
+clone="gh-runner-$base_name"
+
+startup_script=$(mktemp /tmp/startup-script.XXXXXX)
+
+cat >"$startup_script" <<-EOF
+#! /bin/bash
+
+set -x
+set -euo pipefail
+
+git clone https://github.com/grigorye/Orchard-GH-Runners r
+
+env \\
+    RUNNERS_PER_REPO="$runners_per_repo" \\
+    RUNNER_LABELS="$labels" \\
+    REPOS="${repos[*]}" \\
+    RUNNER_BASE_NAME="$base_name" \\
+    RUNNER_CFG_PAT="$pat" \\
+    RUNNER_HOSTNAME="$hostname" \\
+    ./r/helpers/spawn-runners-in-orchard-vm \\
+    2>&1 | tee spawn-runners-in-orchard-vm.log
+EOF
+
+cat "$startup_script"
+
+orchard create vm \
+    --restart-policy OnFailure \
+    --image "$base_image" \
+    --startup-script "@$startup_script" \
+    "$clone"

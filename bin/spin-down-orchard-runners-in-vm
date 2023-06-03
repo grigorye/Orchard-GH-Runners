@@ -1,0 +1,23 @@
+#! /bin/bash
+
+set -x
+set -euo pipefail
+
+vm="$1"
+
+script=$(mktemp /tmp/script.XXXXXX)
+
+cat >"$script" <<-EOF
+#! /bin/bash
+
+set -x
+set -euo pipefail
+
+cd /Users
+
+for user in runner-*; do
+    sudo -u \$user find \$user -name 'config.sh' -exec /Users/{} remove --pat "$RUNNER_CFG_PAT" \;
+done
+EOF
+
+orchard ssh vm "$vm" 'bash -s' <"$script"
