@@ -12,6 +12,8 @@ labels="$RUNNER_LABELS"
 fullName="$user"
 password="password"
 
+wd=$(dirname "$0")
+
 sudo sysadminctl \
     -addUser "$user" \
     -fullName "$fullName" \
@@ -25,12 +27,10 @@ sudo dscl . create "$runner_home" IsHidden 1
 # Allow ssh for the user.
 sudo dseditgroup -o edit -a "$user" -t user com.apple.access_ssh
 
-# Allow VNC connection for the user.
-sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart \
-    -configure -access -on -privs -all -users "$user"
-
 # Make the user an admin.
 sudo dseditgroup -o edit -a "$user" -t user admin
+
+"$wd"/enable-gui-session
 
 sudo cp -R actions-runner "$runner_home"/
 sudo chown -R "$user" "$runner_home"/actions-runner
