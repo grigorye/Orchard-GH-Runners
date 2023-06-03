@@ -1,0 +1,39 @@
+#! /bin/bash
+
+set -x
+set -euo pipefail
+
+labels="$RUNNER_LABELS"
+repos=($REPOS)
+runner_base_name="$RUNNER_BASE_NAME"
+runners_per_repo="$RUNNERS_PER_REPO"
+pat="$RUNNER_CFG_PAT"
+hostname="$RUNNER_HOSTNAME"
+
+wd=$(dirname "$0")
+
+# Make sure VNC viewer does not ask about the EULA.
+mkdir -p ~/.vnc/config.d
+echo 'EulaAccepted=e9afb455678129385e7b56353af525d360097b40' >~/.vnc/config.d/vncviewer
+echo 'localhost::5900/extra=1e01' >~/.vnc/identities
+
+# Make admin group passwordless.
+sudo sh -c "echo '%admin ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/admin-group-nopassword"
+
+# Install VNC viewer and x11vnc, required for enabling GUI session.
+brew install vnc-viewer x11vnc
+
+for i in $(seq 1 "$runners_per_repo"); do
+    for repo in ${repos[@]}; do
+        user_prefix=$(echo "$repo" | tr '/' '-')
+        user="runner-$user_prefix-$i"
+        runner_name="$runner_base_name-$i ($hostname)"
+        env \
+            RUNNER_CFG_PAT="$pat" \
+            USER="$user" \
+            REPO="$repo" \
+            RUNNER_NAME="$runner_name" \
+            RUNNER_LABELS="$labels" \
+            "$wd"/spin-up-runner-in-orchard-vm
+    done
+done
