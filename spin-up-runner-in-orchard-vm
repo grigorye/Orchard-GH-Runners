@@ -25,6 +25,10 @@ sudo dscl . create "$runner_home" IsHidden 1
 # Allow ssh for the user.
 sudo dseditgroup -o edit -a "$user" -t user com.apple.access_ssh
 
+# Allow VNC connection for the user.
+sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart \
+    -configure -access -on -privs -all -users "$user"
+
 # Make the user an admin.
 sudo dseditgroup -o edit -a "$user" -t user admin
 
@@ -40,4 +44,16 @@ sudo -u "$user" "$runner_home"/actions-runner/config.sh \
     --replace \
     --disableupdate
 
-sudo --set-home --user="$user" "$runner_home"/actions-runner/run.sh &
+# Run the runner via ssh (important, running with sudo -u "$user" will not result in proper gui session).
+
+expect=$(mktemp /tmp/expect.XXXXXX)
+cat >"$expect" <<EOF
+spawn ssh -o "StrictHostKeyChecking=no" "$user@localhost" env PATH="$PATH" "$runner_home/actions-runner/run.sh"
+expect "Password:"
+send "password\\n"
+expect eof
+EOF
+
+cat "$expect"
+
+expect -f "$expect"
