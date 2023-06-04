@@ -2,6 +2,28 @@
 
 An attempt to employ [Orchard](https://github.com/cirruslabs/orchard)-controlled macOS VMs instead of default GH runners.
 
+## Usage
+
+-   Create/launch VM for two repos, gh-user-1/repo-1 and gh-user-2/repo-2, and personal access token github_pat_XXXX_YYY:
+
+```shell
+$ env RUNNER_CFG_PAT=github_pat_XXXX_YYY bin/spin-up-orchard-runner-vm gh-user-1/repo-1 gh-user-2/repo-2
+```
+
+5 min later, 4 (macOS) runners should be registered in each of the above repos, idling and ready for accepting jobs. Besides that, orchard should show VM running as below:
+
+```
+$ orchard list vms
+Name                                        	Image                                      	Status 	Restart policy
+gh-runner-ventura-xcode-14.3-20230603-223532	ghcr.io/cirruslabs/macos-ventura-xcode:14.3	running	OnFailure (0 restarts)
+```
+
+-   Remove runners for the above VM (before deleting VM):
+
+```shell
+$ env RUNNER_CFG_PAT=github_pat_XXXX_YYY bin/spin-down-orchard-runners-in-vm gh-runner-ventura-xcode-14.3-20230603-223532
+```
+
 ## Why
 
 -   Save (personal) money by running self-hosted runners (on one or multiple machines), while still benefiting from isolation and reproducibility of runners.
