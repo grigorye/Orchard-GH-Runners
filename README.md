@@ -26,6 +26,7 @@ $ env RUNNER_CFG_PAT=pat spin-down-orchard-runners-in-vm gh-runner-ventura-xcode
 
 -   Save (personal) money by running self-hosted runners (on one or multiple machines), while still benefiting from isolation and reproducibility of runners.
 -   Keep the original workflows backward compatible with GH/require zero changes to employ the runners.
+-   Leave the host machine unaffected/usable for other stuff.
 
 ## How
 
