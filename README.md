@@ -4,24 +4,22 @@ An attempt to employ [Orchard](https://github.com/cirruslabs/orchard)-controlled
 
 ## Usage
 
--   Create/launch VM for two repos, gh-user-1/repo-1 and gh-user-2/repo-2, and personal access token github_pat_XXXX_YYY:
+Assuming  two repos, `gh-user-1/repo-1` and `gh-user-2/repo-2`, and a personal access token `pat`:
+
+### Launching
+
+Create and launch VM with the runners (should become available ~5 min later on each GH repo):
 
 ```shell
-$ env RUNNER_CFG_PAT=github_pat_XXXX_YYY bin/spin-up-orchard-runner-vm gh-user-1/repo-1 gh-user-2/repo-2
+$ env RUNNER_CFG_PAT=pat spin-up-orchard-runner-vm gh-user-1/repo-1 gh-user-2/repo-2
 ```
 
-5 min later, 4 (macOS) runners should be registered in each of the above repos, idling and ready for accepting jobs. Besides that, orchard should show VM running as below:
+## Deregistering
 
-```
-$ orchard list vms
-Name                                        	Image                                      	Status 	Restart policy
-gh-runner-ventura-xcode-14.3-20230603-223532	ghcr.io/cirruslabs/macos-ventura-xcode:14.3	running	OnFailure (0 restarts)
-```
-
--   Remove runners for the above VM (before deleting VM):
+Remove runners for the above VM (e.g. before deleting the VM):
 
 ```shell
-$ env RUNNER_CFG_PAT=github_pat_XXXX_YYY bin/spin-down-orchard-runners-in-vm gh-runner-ventura-xcode-14.3-20230603-223532
+$ env RUNNER_CFG_PAT=pat spin-down-orchard-runners-in-vm gh-runner-ventura-xcode-14.3-20230603-223532
 ```
 
 ## Why
