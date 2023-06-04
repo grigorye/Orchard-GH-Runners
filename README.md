@@ -40,6 +40,19 @@ Sharing VM instance is not ideal in terms of reproducibility/clean builds/mimick
 
 Unfortunately, while theoretically I could run single VM per runner, it's not practical, as number of running VMs is limited (by Apple) to 2. Spawning VMs on demand (ephemeral runners) could be an option, that would solve most of the above problems, but it would require more complex setup, that I did not try to accomplish yet. I intend to employ this very setup for multiple jobs running in parallel on a single Mac (ok, two Macs maximum).
 
+### Customizable options
+
+All options should be set through environment variables below.
+
+| Variable              | Meaning                                                      | Default            |
+| --------------------- | ------------------------------------------------------------ | ------------------ |
+| RUNNERS_PER_REPO      | Number of runners spawn per repo                             | 4                  |
+| ORCHARD_MACOS_VARIANT | The variant of VM image (xxx in macos-xxx image name). See the list of the images [here](https://github.com/cirruslabs/macos-image-templates). | ventura-xcode:14.3 |
+| RUNNER_CFG_PAT        | Personal access token (required)                             |                    |
+| RUNNER_LABELS         | Labels associated with the runner (should match the ones used in GH workflows) |                    |
+| RUNNER_HOSTNAME       | Hostname visible reflected in the runner settings on GitHub (for the host identification purposes). | $(hostname)        |
+|                       |                                                              |                    |
+
 ### Known to work
 
 -   [Orchard](https://github.com/cirruslabs/orchard): version 0.7.0-60e564d
