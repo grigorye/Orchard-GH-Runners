@@ -3,6 +3,11 @@
 set -x
 set -euo pipefail
 
+env="$HOME/.orchard-runner.env"
+if test -f "$env"; then
+    . "$env"
+fi
+
 vm="$1"
 
 script=$(mktemp /tmp/script.XXXXXX)

@@ -3,6 +3,11 @@
 set -x
 set -euo pipefail
 
+env="$HOME/.orchard-runner.env"
+if test -f "$env"; then
+    . "$env"
+fi
+
 hostname=${RUNNER_HOSTNAME:-"$(hostname)"}
 pat="$RUNNER_CFG_PAT"
 variant="${ORCHARD_MACOS_VARIANT:-ventura-xcode:14.3}"
