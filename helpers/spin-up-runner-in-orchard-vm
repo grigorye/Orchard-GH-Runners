@@ -41,8 +41,7 @@ sudo -u "$user" "$runner_home"/actions-runner/config.sh \
     --name "$runner_name" \
     --labels "$labels" \
     --unattended \
-    --replace \
-    --disableupdate
+    --replace
 
 # Run the runner via ssh (important, running with sudo -u "$user" will not result in proper gui session).
 
