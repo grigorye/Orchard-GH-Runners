@@ -50,6 +50,9 @@ cat >"$expect" <<EOF
 spawn ssh -o "StrictHostKeyChecking=no" "$user@localhost" env PATH="$PATH" "$runner_home/actions-runner/run.sh"
 expect "Password:"
 send "password\\n"
+set timeout 30
+expect "Restarting runner..."
+expect "Listening for Jobs"
 expect eof
 EOF
 
