@@ -21,8 +21,12 @@ set -euo pipefail
 cd /Users
 
 for user in runner-*; do
-    sudo -u \$user find \$user -name 'config.sh' -exec /Users/{} remove --pat "$RUNNER_CFG_PAT" \;
+    log="spin-down-\$user.log"
+    sudo -u \$user find \$user -name 'config.sh' -exec /Users/{} remove --pat "$RUNNER_CFG_PAT" \; \
+        > ~/"\$log" 2>&1 &
 done
+
+wait
 EOF
 
 orchard ssh vm "$vm" 'bash -s' <"$script"
