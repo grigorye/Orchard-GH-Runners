@@ -26,7 +26,7 @@ sudo sh -c "echo '%admin ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/admin-group-n
 brew install vnc-viewer x11vnc
 
 for i in $(seq 1 "$runners_per_repo"); do
-    for repo in ${repos[@]}; do
+    for repo in "${repos[@]}"; do
         user_prefix=$(echo "$repo" | tr '/' '-')
         user="runner-$user_prefix-$i"
         runner_name="$runner_base_name-$i ($hostname)"
