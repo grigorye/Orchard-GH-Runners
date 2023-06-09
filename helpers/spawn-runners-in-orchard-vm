@@ -10,6 +10,8 @@ runners_per_repo="$RUNNERS_PER_REPO"
 pat="$RUNNER_CFG_PAT"
 hostname="$RUNNER_HOSTNAME"
 
+tmpdir=$(mktemp /tmp/"$(basename $0)".XXXXX)
+
 wd=$(dirname "$0")
 
 # Make sure VNC viewer does not ask about the EULA.
@@ -28,14 +30,18 @@ for i in $(seq 1 "$runners_per_repo"); do
         user_prefix=$(echo "$repo" | tr '/' '-')
         user="runner-$user_prefix-$i"
         runner_name="$runner_base_name-$i ($hostname)"
+        log="spawn-$user.log"
+        sleep 1 # Workaround sysadminctl race with user creation.
         env \
             RUNNER_CFG_PAT="$pat" \
             USER="$user" \
             REPO="$repo" \
             RUNNER_NAME="$runner_name" \
             RUNNER_LABELS="$labels" \
-            "$wd"/spin-up-runner-in-orchard-vm
+            "$wd"/spin-up-runner-in-orchard-vm \
+            >"$log" 2>&1 &
     done
 done
 
+wait
 echo "${SPAWN_END_MARKER:-}"
