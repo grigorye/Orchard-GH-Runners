@@ -24,6 +24,9 @@ clone="gh-runner-$base_name"
 
 startup_script=$(mktemp /tmp/startup-script.XXXXXX)
 
+spawn_log="spawn-runners-in-orchard-vm.log"
+end_marker=$(uuidgen)
+
 cat >"$startup_script" <<-EOF
 #! /bin/bash
 
@@ -39,8 +42,9 @@ env \\
     RUNNER_BASE_NAME="$base_name" \\
     RUNNER_CFG_PAT="$pat" \\
     RUNNER_HOSTNAME="$hostname" \\
+    SPAWN_END_MARKER="$end_marker" \\
     ./r/helpers/spawn-runners-in-orchard-vm \\
-    2>&1 | tee spawn-runners-in-orchard-vm.log
+    2>&1 | tee "$spawn_log"
 EOF
 
 cat "$startup_script"
@@ -50,3 +54,17 @@ orchard create vm \
     --image "$base_image" \
     --startup-script "@$startup_script" \
     "$clone"
+
+while ! orchard ssh vm "$clone" "test -f $spawn_log"; do
+    sleep 1
+done
+
+(
+    echo $$
+    orchard ssh vm "$clone" "tail -f $spawn_log"
+) |
+    (
+        read -r pid
+        awk "/$end_marker/ { exit } { print }"
+        kill "$pid"
+    )
