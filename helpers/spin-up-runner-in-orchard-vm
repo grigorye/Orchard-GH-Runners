@@ -36,6 +36,12 @@ sudo dseditgroup -o edit -a "$user" -t user admin
 sudo cp -R actions-runner "$runner_home"/
 sudo chown -R "$user" "$runner_home"/actions-runner
 
+sudo -u "$user" env HOME="$runner_home" git config --global credential.helper store
+git_credentials=$(mktemp /tmp/.git-credentials.XXXXX)
+echo "${RUNNER_GIT_CREDENTIALS:-}" >"$git_credentials"
+sudo cp "$git_credentials" "$runner_home/.git-credentials"
+sudo chown "$user" "$runner_home/.git-credentials"
+
 sudo -u "$user" "$runner_home"/actions-runner/config.sh \
     --url "$repo_url" \
     ${pat:+--pat "$pat"} \

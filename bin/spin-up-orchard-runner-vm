@@ -49,6 +49,7 @@ env \\
     RUNNER_LABELS="$labels" \\
     REPOS="${repos[*]}" \\
     RUNNER_GH_DOMAIN="${RUNNER_GH_DOMAIN:-}" \\
+    RUNNER_GIT_CREDENTIALS="${RUNNER_GIT_CREDENTIALS:-}" \\
     RUNNER_BASE_NAME="$base_name" \\
     RUNNER_CFG_PAT="${pat:-}" \\
     RUNNER_TOKEN="${token:-}" \\
