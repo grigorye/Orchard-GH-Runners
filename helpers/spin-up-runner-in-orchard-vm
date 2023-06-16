@@ -3,10 +3,11 @@
 set -x
 set -euo pipefail
 
-repo="$REPO"
+repo_url="$REPO_URL"
 user="$USER"
 runner_name="$RUNNER_NAME"
-pat="$RUNNER_CFG_PAT"
+pat="${RUNNER_CFG_PAT:-}"
+token="${RUNNER_TOKEN:-}"
 labels="$RUNNER_LABELS"
 
 fullName="$user"
@@ -36,8 +37,9 @@ sudo cp -R actions-runner "$runner_home"/
 sudo chown -R "$user" "$runner_home"/actions-runner
 
 sudo -u "$user" "$runner_home"/actions-runner/config.sh \
-    --url "https://github.com/$repo" \
-    --pat "$pat" \
+    --url "$repo_url" \
+    ${pat:+--pat "$pat"} \
+    ${token:+--token "$token"} \
     --name "$runner_name" \
     --labels "$labels" \
     --unattended \

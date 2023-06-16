@@ -3,7 +3,7 @@
 set -x
 set -euo pipefail
 
-env="$HOME/.orchard-runner.env"
+env="$HOME/.orchard-runner${RUNNER_ENV:+-$RUNNER_ENV}.env"
 if test -f "$env"; then
     . "$env"
 fi

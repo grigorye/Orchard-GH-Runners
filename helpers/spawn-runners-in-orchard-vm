@@ -4,10 +4,12 @@ set -x
 set -euo pipefail
 
 labels="$RUNNER_LABELS"
+gh_domain="${RUNNER_GH_DOMAIN:-}"
 repos=($REPOS)
 runner_base_name="$RUNNER_BASE_NAME"
 runners_per_repo="$RUNNERS_PER_REPO"
-pat="$RUNNER_CFG_PAT"
+pat="${RUNNER_CFG_PAT:-}"
+token="${RUNNER_TOKEN:-}"
 hostname="$RUNNER_HOSTNAME"
 
 tmpdir=$(mktemp /tmp/"$(basename $0)".XXXXX)
@@ -33,9 +35,10 @@ for i in $(seq 1 "$runners_per_repo"); do
         log="spawn-$user.log"
         sleep 1 # Workaround sysadminctl race with user creation.
         env \
-            RUNNER_CFG_PAT="$pat" \
+            RUNNER_CFG_PAT="${pat:-}" \
+            RUNNER_TOKEN="${token:-}" \
             USER="$user" \
-            REPO="$repo" \
+            REPO_URL="https://$gh_domain/$repo" \
             RUNNER_NAME="$runner_name" \
             RUNNER_LABELS="$labels" \
             "$wd"/spin-up-runner-in-orchard-vm \
