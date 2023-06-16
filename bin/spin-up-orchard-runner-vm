@@ -18,8 +18,7 @@ custom_actions_runner_package_url="${RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL:-}
 
 repos=("$@")
 
-base_image="ghcr.io/cirruslabs/macos-$variant"
-# base_image="$variant"
+base_image="${ORCHARD_MACOS_BASE_IMAGE:-ghcr.io/cirruslabs/macos-$variant}"
 variant_name=$(echo "$variant" | tr ':' '-')
 base_name="$variant_name-${ORCHARD_VM_STAMP:-$(date +%Y%m%d-%H%M%S)}"
 clone="gh-runner-$base_name"
