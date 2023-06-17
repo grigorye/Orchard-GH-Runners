@@ -39,7 +39,7 @@ git clone https://github.com/grigorye/Orchard-GH-Runners r
 if [ "${RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL:-}" != "" ]; then
     rm -r actions-runner
     mkdir actions-runner
-    curl -o custom-actions-runner.tar.gz -L -H 'Authorization: Bearer $RUNNER_AUTH_BEARER' "$RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL"
+    curl -o custom-actions-runner.tar.gz -L "$RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL"
     tar xzf custom-actions-runner.tar.gz -C actions-runner
 fi
 
