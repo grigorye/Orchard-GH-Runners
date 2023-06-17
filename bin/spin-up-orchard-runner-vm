@@ -36,19 +36,13 @@ set -euo pipefail
 
 git clone https://github.com/grigorye/Orchard-GH-Runners r
 
-if [ "${RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL:-}" != "" ]; then
-    rm -r actions-runner
-    mkdir actions-runner
-    curl -o custom-actions-runner.tar.gz -L "$RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL"
-    tar xzf custom-actions-runner.tar.gz -C actions-runner
-fi
-
 env \\
     RUNNERS_PER_REPO="$runners_per_repo" \\
     RUNNER_LABELS="$labels" \\
     REPOS="${repos[*]}" \\
     RUNNER_GH_DOMAIN="${RUNNER_GH_DOMAIN:-}" \\
     RUNNER_GIT_CREDENTIALS="${RUNNER_GIT_CREDENTIALS:-}" \\
+    RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL="${RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL:-}" \\
     RUNNER_BASE_NAME="$base_name" \\
     RUNNER_CFG_PAT="${pat:-}" \\
     RUNNER_TOKEN="${token:-}" \\
