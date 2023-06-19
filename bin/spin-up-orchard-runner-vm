@@ -15,6 +15,7 @@ variant="${ORCHARD_MACOS_VARIANT:-ventura-xcode:14.3}"
 labels="${RUNNER_LABELS:+$RUNNER_LABELS,}hosted-on-$hostname"
 runners_per_repo="${RUNNERS_PER_REPO:-4}"
 custom_actions_runner_package_url="${RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL:-}"
+cpu_count="${ORCHARD_CPU_COUNT:-6}"
 
 repos=("$@")
 
@@ -55,6 +56,7 @@ EOF
 cat "$startup_script"
 
 orchard create vm \
+    --cpu "$cpu_count" \
     --restart-policy OnFailure \
     --image "$base_image" \
     --startup-script "@$startup_script" \
