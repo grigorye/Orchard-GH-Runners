@@ -22,18 +22,21 @@ sudo sysadminctl \
 
 runner_home="/Users/$user"
 
-# Hide the user from the login window.
-sudo dscl . create "$runner_home" IsHidden 1
+if [ "$user" != "admin" ]; then
+    # Hide the user from the login window.
+    sudo dscl . create "$runner_home" IsHidden 1
 
-# Allow ssh for the user.
-sudo dseditgroup -o edit -a "$user" -t user com.apple.access_ssh
+    # Allow ssh for the user.
+    sudo dseditgroup -o edit -a "$user" -t user com.apple.access_ssh
 
-# Make the user an admin.
-sudo dseditgroup -o edit -a "$user" -t user admin
+    # Make the user an admin.
+    sudo dseditgroup -o edit -a "$user" -t user admin
 
-"$wd"/enable-gui-session
+    "$wd"/enable-gui-session
 
-sudo cp -R actions-runner "$runner_home"/
+    sudo cp -R actions-runner "$runner_home"/
+fi
+
 sudo chown -R "$user" "$runner_home"/actions-runner
 
 sudo -u "$user" env HOME="$runner_home" git config --global credential.helper store

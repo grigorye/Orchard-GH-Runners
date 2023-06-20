@@ -62,5 +62,19 @@ for i in $(seq 1 "$runners_per_repo"); do
     done
 done
 
+cp -pR actions-runner actions-runner.orig
+
+runner_name="$runner_base_name-0 ($hostname)"
+
+env \
+    RUNNER_CFG_PAT="${pat:-}" \
+    RUNNER_TOKEN="${token:-}" \
+    USER="admin" \
+    REPO_URL="https://$gh_domain/$repo" \
+    RUNNER_NAME="$runner_name" \
+    RUNNER_LABELS="$labels,macos-ui-automation" \
+    "$wd"/spin-up-runner-in-orchard-vm \
+    >"$log" 2>&1 &
+
 wait
 echo "${SPAWN_END_MARKER:-}"
