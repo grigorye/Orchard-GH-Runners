@@ -9,13 +9,12 @@ if test -f "$env"; then
 fi
 
 hostname=${RUNNER_HOSTNAME:-"$(hostname)"}
-pat="${RUNNER_CFG_PAT:-}"
-token="${RUNNER_CFG_TOKEN:-}"
 variant="${ORCHARD_MACOS_VARIANT:-ventura-xcode:14.3}"
 labels="${RUNNER_LABELS:+$RUNNER_LABELS,}hosted-on-$hostname"
 runners_per_repo="${RUNNERS_PER_REPO:-4}"
-custom_actions_runner_package_url="${RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL:-}"
 cpu_count="${ORCHARD_CPU_COUNT:-6}"
+
+[ -n "$RUNNER_CFG_PAT" ] || [ -n "$RUNNER_CFG_TOKEN" ]
 
 repos=("$@")
 
@@ -45,8 +44,8 @@ env \\
     RUNNER_GIT_CREDENTIALS="${RUNNER_GIT_CREDENTIALS:-}" \\
     RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL="${RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL:-}" \\
     RUNNER_BASE_NAME="$base_name" \\
-    RUNNER_CFG_PAT="${pat:-}" \\
-    RUNNER_TOKEN="${token:-}" \\
+    RUNNER_CFG_PAT="${RUNNER_CFG_PAT:-}" \\
+    RUNNER_TOKEN="${RUNNER_CFG_TOKEN:-}" \\
     RUNNER_HOSTNAME="$hostname" \\
     SPAWN_END_MARKER="$end_marker" \\
     ./r/helpers/spawn-runners-in-orchard-vm \\
