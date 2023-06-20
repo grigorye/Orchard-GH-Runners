@@ -39,7 +39,7 @@ cat >"$automationmodetool_expect" <<EOF
 spawn automationmodetool enable-automationmode-without-authentication
 expect "Enter the password for user 'admin':"
 send "admin\\n"
-set timeout 30
+expect "Setting up machine to allow Automation Mode without requiring user authentication... succeeded."
 EOF
 expect -f "$automationmodetool_expect"
 
