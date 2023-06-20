@@ -57,5 +57,5 @@ sudo -u "$user" "$runner_home"/actions-runner/config.sh \
 user_id=$(id -u "$user")
 
 # Launch runner in gui session.
-launchctl asuser "$user_id" sudo -u "$user" sh -lc "$runner_home/actions-runner/run.sh" &
+sudo launchctl asuser "$user_id" sudo -u "$user" sh -lc "$runner_home/actions-runner/run.sh" &
 disown
