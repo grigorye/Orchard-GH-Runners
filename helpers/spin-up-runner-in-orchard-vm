@@ -20,7 +20,8 @@ sudo sysadminctl \
     -fullName "$fullName" \
     -password "$password"
 
-runner_home="/Users/$user"
+runner_home="/Users/$user${RUNNER_HOME_PREFIX:+/$RUNNER_HOME_PREFIX}"
+mkdir -p "$runner_home"
 
 if [ "$user" != "admin" ]; then
     # Hide the user from the login window.

@@ -70,15 +70,24 @@ done
 
 runner_name="$runner_base_name-0 ($hostname)"
 
-env \
-    RUNNER_CFG_PAT="${pat:-}" \
-    RUNNER_TOKEN="${token:-}" \
-    USER="admin" \
-    REPO_URL="https://$gh_domain/$repo" \
-    RUNNER_NAME="$runner_name" \
-    RUNNER_LABELS="$labels${RUNNER_ADMIN_LABELS:+,$RUNNER_ADMIN_LABELS}" \
-    "$wd"/spin-up-runner-in-orchard-vm \
-    >"$log" 2>&1 &
+if [ "${RUNNER_ADMIN_LABELS:-}" != "" ]; then
+    for repo in "${repos[@]}"; do
+        user_prefix=$(echo "$repo" | tr '/' '-')
+        user="admin"
+        runner_name="$runner_base_name-0 ($hostname)"
+        log="spawn-admin-$user_prefix.log"
+        env \
+            RUNNER_CFG_PAT="${pat:-}" \
+            RUNNER_TOKEN="${token:-}" \
+            USER="$user" \
+            REPO_URL="https://$gh_domain/$repo" \
+            RUNNER_NAME="$runner_name" \
+            RUNNER_LABELS="$labels${RUNNER_ADMIN_LABELS:+,$RUNNER_ADMIN_LABELS}" \
+            RUNNER_HOME_PREFIX="$user_prefix" \
+            "$wd"/spin-up-runner-in-orchard-vm \
+            >"$log" 2>&1 &
+    done
+fi
 
 wait
 echo "${SPAWN_END_MARKER:-}"
