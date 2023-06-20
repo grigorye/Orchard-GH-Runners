@@ -60,7 +60,7 @@ for i in $(seq 1 "$runners_per_repo"); do
             USER="$user" \
             REPO_URL="https://$gh_domain/$repo" \
             RUNNER_NAME="$runner_name" \
-            RUNNER_LABELS="$labels" \
+            RUNNER_LABELS="$labels${RUNNER_NON_ADMIN_LABELS:+,$RUNNER_NON_ADMIN_LABELS}" \
             "$wd"/spin-up-runner-in-orchard-vm \
             >"$log" 2>&1 &
     done
@@ -76,7 +76,7 @@ env \
     USER="admin" \
     REPO_URL="https://$gh_domain/$repo" \
     RUNNER_NAME="$runner_name" \
-    RUNNER_LABELS="$labels,macos-ui-automation" \
+    RUNNER_LABELS="$labels${RUNNER_ADMIN_LABELS:+,$RUNNER_ADMIN_LABELS}" \
     "$wd"/spin-up-runner-in-orchard-vm \
     >"$log" 2>&1 &
 

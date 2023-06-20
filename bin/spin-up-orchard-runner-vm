@@ -39,6 +39,8 @@ git clone https://github.com/grigorye/Orchard-GH-Runners r
 env \\
     RUNNERS_PER_REPO="$runners_per_repo" \\
     RUNNER_LABELS="$labels" \\
+    RUNNER_NON_ADMIN_LABELS="${RUNNER_NON_ADMIN_LABELS:-}" \\
+    RUNNER_ADMIN_LABELS="${RUNNER_ADMIN_LABELS:-}" \\
     REPOS="${repos[*]}" \\
     RUNNER_GH_DOMAIN="${RUNNER_GH_DOMAIN:-}" \\
     RUNNER_GIT_CREDENTIALS="${RUNNER_GIT_CREDENTIALS:-}" \\
