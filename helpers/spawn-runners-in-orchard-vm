@@ -16,6 +16,19 @@ tmpdir=$(mktemp /tmp/"$(basename $0)".XXXXX)
 
 wd=$(dirname "$0")
 
+force_automation_without_authentication() {
+    automationmodetool_expect="$HOME/automationmodetool.expect"
+    cat >"$automationmodetool_expect" <<EOF
+spawn automationmodetool enable-automationmode-without-authentication
+expect "Enter the password for user 'admin':"
+send "admin\\n"
+expect "Setting up machine to allow Automation Mode without requiring user authentication... succeeded."
+EOF
+    expect -f "$automationmodetool_expect"
+}
+
+force_automation_without_authentication
+
 if [ "${RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL:-}" != "" ]; then
     rm -r actions-runner
     mkdir actions-runner
@@ -33,15 +46,6 @@ sudo sh -c "echo '%admin ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/admin-group-n
 
 # Install VNC viewer and x11vnc, required for enabling GUI session.
 brew install vnc-viewer x11vnc
-
-automationmodetool_expect="$HOME/automationmodetool.expect"
-cat >"$automationmodetool_expect" <<EOF
-spawn automationmodetool enable-automationmode-without-authentication
-expect "Enter the password for user 'admin':"
-send "admin\\n"
-expect "Setting up machine to allow Automation Mode without requiring user authentication... succeeded."
-EOF
-expect -f "$automationmodetool_expect"
 
 for i in $(seq 1 "$runners_per_repo"); do
     for repo in "${repos[@]}"; do
