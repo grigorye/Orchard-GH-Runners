@@ -54,18 +54,8 @@ sudo -u "$user" "$runner_home"/actions-runner/config.sh \
     --unattended \
     --replace
 
-# Run the runner via ssh (important, running with sudo -u "$user" will not result in proper gui session).
+user_id=$(id -u "$user")
 
-expect="$HOME/$user-run.expect"
-cat >"$expect" <<EOF
-spawn ssh -o "StrictHostKeyChecking=no" "$user@localhost" env PATH="$PATH" "$runner_home/actions-runner/run.sh"
-expect "Password:"
-send "password\\n"
-set timeout 30
-expect "Restarting runner..."
-expect "Listening for Jobs"
-EOF
-
-cat "$expect"
-
-expect -f "$expect"
+# Launch runner in gui session.
+launchctl asuser "$user_id" sudo -u "$user" sh -lc "$runner_home/actions-runner/run.sh" &
+disown
