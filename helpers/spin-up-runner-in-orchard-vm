@@ -58,8 +58,13 @@ sudo -u "$user" "$runner_home"/actions-runner/config.sh \
     --unattended \
     --replace
 
-# Run the runner via ssh (important, running with sudo -u "$user" will not result in proper gui session).
-
+# Run the runner via ssh. Important, the following alternatives are known to be
+# problematic:
+# - `sudo -u "$user" xxx` does not result in proper gui session.
+# - `sudo launchctl asuser $user sudo -u $user  sh -lc xxx` results in
+#   xcodebuild failing without much diagnostics with exit status 70 soon after
+#   start.
+#
 expect="$HOME/$user-run.expect"
 cat >"$expect" <<EOF
 spawn ssh -o "StrictHostKeyChecking=no" "$user@localhost" env PATH="$PATH" "$runner_home/actions-runner/run.sh"
