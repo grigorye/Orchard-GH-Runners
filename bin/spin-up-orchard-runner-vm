@@ -10,7 +10,7 @@ fi
 
 hostname=${RUNNER_HOSTNAME:-"$(hostname)"}
 variant="${ORCHARD_MACOS_VARIANT:-ventura-xcode:14.3}"
-labels="${RUNNER_LABELS:+$RUNNER_LABELS,}hosted-on-$hostname"
+labels="${RUNNER_LABELS:+$RUNNER_LABELS,}@$(date +%Y%m%d-%H%M)"
 runners_per_repo="${RUNNERS_PER_REPO:-4}"
 cpu_count="${ORCHARD_CPU_COUNT:-6}"
 
@@ -20,7 +20,7 @@ repos=("$@")
 
 base_image="${ORCHARD_MACOS_BASE_IMAGE:-ghcr.io/cirruslabs/macos-$variant}"
 variant_name=$(echo "$variant" | tr ':' '-')
-base_name="$variant_name-${ORCHARD_VM_STAMP:-$(date +%Y%m%d-%H%M%S)}"
+base_name="$variant_name"
 clone="gh-runner-$base_name"
 
 startup_script=$(mktemp /tmp/startup-script.XXXXXX)
