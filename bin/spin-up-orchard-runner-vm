@@ -21,7 +21,8 @@ repos=("$@")
 base_image="${ORCHARD_MACOS_BASE_IMAGE:-ghcr.io/cirruslabs/macos-$variant}"
 variant_name=$(echo "$variant" | tr ':' '-')
 base_name="$variant_name"
-clone="gh-runner-$base_name"
+repos_encoded=$(echo "${repos[*]}" | tr ' ' ',' | tr '/' '_' | sed 's/,/, /')
+clone="gh-${base_name}-(${repos_encoded})"
 
 startup_script=$(mktemp /tmp/startup-script.XXXXXX)
 
