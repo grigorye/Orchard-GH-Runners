@@ -20,7 +20,7 @@ set -euo pipefail
 
 cd /Users
 
-for user in runner-*; do
+for user in admin runner-*; do
     log="spin-down-\$user.log"
     sudo -u \$user find \$user -name 'config.sh' -exec /Users/{} remove --pat "$RUNNER_CFG_PAT" \; \
         > ~/"\$log" 2>&1 &
