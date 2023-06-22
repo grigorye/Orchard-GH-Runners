@@ -71,7 +71,8 @@ spawn ssh -o "StrictHostKeyChecking=no" "$user@localhost" env PATH="$PATH" "$run
 expect "Password:"
 send "$password\\n"
 set timeout 30
-expect "Restarting runner..."
+expect "Listening for Jobs"
+expect "Runner update in progress, do not shutdown runner."
 expect "Listening for Jobs"
 EOF
 
