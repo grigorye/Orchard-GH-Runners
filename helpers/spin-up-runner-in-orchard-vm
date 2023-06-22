@@ -43,6 +43,8 @@ sudo cp -pR actions-runner.dist "$runner_home"/actions-runner
 
 sudo chown -R "$user" "$runner_home"/actions-runner
 
+defaults -currentHost write com.apple.screensaver idleTime 0
+
 sudo -u "$user" env HOME="$runner_home" git config --global credential.helper store
 git_credentials=$(mktemp /tmp/.git-credentials.XXXXX)
 echo "${RUNNER_GIT_CREDENTIALS:-}" >"$git_credentials"
