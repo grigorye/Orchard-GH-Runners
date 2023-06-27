@@ -67,7 +67,7 @@ sudo -u "$user" "$runner_home"/actions-runner/config.sh \
 #   xcodebuild failing without much diagnostics with exit status 70 soon after
 #   start.
 #
-expect="$HOME/$user-run.expect"
+expect="ssh-actions_$runner_name.expect"
 cat >"$expect" <<EOF
 spawn ssh -o "StrictHostKeyChecking=no" "$user@localhost" env PATH="$PATH" "$runner_home/actions-runner/run.sh"
 expect "Password:"
