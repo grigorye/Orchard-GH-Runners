@@ -23,6 +23,11 @@ sudo sysadminctl \
 runner_home="/Users/$user${RUNNER_HOME_PREFIX:+/$RUNNER_HOME_PREFIX}"
 mkdir -p "$runner_home"
 
+if [ -f pre-run ]; then
+    sudo -u "$user" cp pre-run "$runner_home"/
+    sudo -u "$user" env HOME="$runner_home" "$runner_home"/pre-run
+fi
+
 if [ "$user" != "admin" ]; then
     # Hide the user from the login window.
     sudo dscl . create "$runner_home" IsHidden 1

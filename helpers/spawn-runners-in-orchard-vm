@@ -39,7 +39,6 @@ fi
 if [ "${RUNNER_CUSTOM_PRE_RUN_SCRIPT_URL:-}" != "" ]; then
     curl -o ./pre-run -L "$RUNNER_CUSTOM_PRE_RUN_SCRIPT_URL"
     chmod +x ./pre-run
-    ./pre-run
 fi
 
 # Make sure VNC viewer does not ask about the EULA.
