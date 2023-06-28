@@ -36,6 +36,12 @@ if [ "${RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL:-}" != "" ]; then
     tar xzf custom-actions-runner.tar.gz -C actions-runner
 fi
 
+if [ "${RUNNER_CUSTOM_PRE_RUN_SCRIPT_URL:-}" != "" ]; then
+    curl -o ./pre-run -L "$RUNNER_CUSTOM_PRE_RUN_SCRIPT_URL"
+    chmod +x ./pre-run
+    ./pre-run
+fi
+
 # Make sure VNC viewer does not ask about the EULA.
 mkdir -p ~/.vnc/config.d
 echo 'EulaAccepted=e9afb455678129385e7b56353af525d360097b40' >~/.vnc/config.d/vncviewer
