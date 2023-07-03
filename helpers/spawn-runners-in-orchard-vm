@@ -12,6 +12,9 @@ pat="${RUNNER_CFG_PAT:-}"
 token="${RUNNER_TOKEN:-}"
 hostname="$RUNNER_HOSTNAME"
 
+# Make sure the clock is set correctly (especially after restarting VM/sleep and etc.)
+sudo sntp -sS time.apple.com
+
 tmpdir=$(mktemp /tmp/"$(basename $0)".XXXXX)
 
 wd=$(dirname "$0")
