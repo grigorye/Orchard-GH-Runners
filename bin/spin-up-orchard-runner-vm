@@ -8,7 +8,7 @@ if test -f "$env"; then
     . "$env"
 fi
 
-hostname="${RUNNER_HOSTNAME:-$(hostname -s)}"
+hostname="${RUNNER_HOSTNAME:-$(hostname -s).local}"
 variant="${ORCHARD_MACOS_VARIANT:-ventura-xcode:14.3}"
 labels="${RUNNER_LABELS:+$RUNNER_LABELS,}@$(date +%Y%m%d-%H%M)"
 runners_per_repo="${RUNNERS_PER_REPO:-4}"
