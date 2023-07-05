@@ -32,22 +32,19 @@ EOF
 
 force_automation_without_authentication
 
-if [ "${RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL:-}" != "" ]; then
+ORCHARD_SHARED_HOST_DIR="/Volumes/My Shared Files"
+ORCHARD_SHARED_RUNNER_SETUP="$ORCHARD_SHARED_HOST_DIR"/orchard-runner-setup
+RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE=$(find "$ORCHARD_SHARED_RUNNER_SETUP" -name 'actions-runner-osx-arm64-*.tar.gz')
+ORCHARD_ADMIN_PRE_RUN_SCRIPT="$ORCHARD_SHARED_RUNNER_SETUP"/pre-run-admin.sh
+
+if [ "${RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE:-}" != "" ] && [ -f "$RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE" ]; then
     rm -r actions-runner
     mkdir actions-runner
-    curl -o custom-actions-runner.tar.gz -L "$RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL"
-    tar xzf custom-actions-runner.tar.gz -C actions-runner
+    tar xzf "$RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE" -C actions-runner
 fi
 
-if [ "${RUNNER_PRE_RUN_SCRIPT_URL:-}" != "" ]; then
-    curl -o ./pre-run -L "$RUNNER_PRE_RUN_SCRIPT_URL"
-    chmod +x ./pre-run
-fi
-
-if [ "${ORCHARD_ADMIN_PRE_RUN_SCRIPT_URL:-}" != "" ]; then
-    curl -o ./admin-pre-run -L "$ORCHARD_ADMIN_PRE_RUN_SCRIPT_URL"
-    chmod +x ./admin-pre-run
-    ./admin-pre-run
+if [ -f "$ORCHARD_ADMIN_PRE_RUN_SCRIPT" ]; then
+    "$ORCHARD_ADMIN_PRE_RUN_SCRIPT"
 fi
 
 # Make sure VNC viewer does not ask about the EULA.

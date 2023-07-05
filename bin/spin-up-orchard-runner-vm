@@ -45,9 +45,6 @@ env \\
     REPOS="${repos[*]}" \\
     RUNNER_GH_DOMAIN="${RUNNER_GH_DOMAIN:-}" \\
     RUNNER_GIT_CREDENTIALS="${RUNNER_GIT_CREDENTIALS:-}" \\
-    RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL="${RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE_URL:-}" \\
-    RUNNER_PRE_RUN_SCRIPT_URL="${RUNNER_PRE_RUN_SCRIPT_URL:-}" \\
-    ORCHARD_ADMIN_PRE_RUN_SCRIPT_URL="${ORCHARD_ADMIN_PRE_RUN_SCRIPT_URL:-}" \\
     RUNNER_BASE_NAME="$base_name" \\
     RUNNER_CFG_PAT="${RUNNER_CFG_PAT:-}" \\
     RUNNER_TOKEN="${RUNNER_CFG_TOKEN:-}" \\
@@ -64,6 +61,7 @@ orchard create vm \
     --restart-policy OnFailure \
     --image "$base_image" \
     --startup-script "@$startup_script" \
+    ${ORCHARD_VM_ARGS:+${ORCHARD_VM_ARGS[@]}} \
     "$clone"
 
 while ! orchard ssh vm "$clone" "test -f $spawn_log"; do

@@ -23,8 +23,12 @@ sudo sysadminctl \
 runner_home="/Users/$user${RUNNER_HOME_PREFIX:+/$RUNNER_HOME_PREFIX}"
 mkdir -p "$runner_home"
 
-if [ -f pre-run ]; then
-    sudo -u "$user" cp pre-run "$runner_home"/
+ORCHARD_SHARED_HOST_DIR="/Volumes/My Shared Files"
+ORCHARD_SHARED_RUNNER_SETUP="$ORCHARD_SHARED_HOST_DIR"/orchard-runner-setup
+RUNNER_PRE_RUN_SCRIPT="$ORCHARD_SHARED_RUNNER_SETUP"/pre-run-runner.sh
+
+if [ -f "$RUNNER_PRE_RUN_SCRIPT" ]; then
+    sudo -u "$user" cp "$RUNNER_PRE_RUN_SCRIPT" "$runner_home"/pre-run
     sudo -u "$user" env HOME="$runner_home" "$runner_home"/pre-run
 fi
 
