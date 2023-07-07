@@ -34,7 +34,7 @@ force_automation_without_authentication
 
 ORCHARD_SHARED_HOST_DIR="/Volumes/My Shared Files"
 ORCHARD_SHARED_RUNNER_SETUP="$ORCHARD_SHARED_HOST_DIR"/orchard-runner-setup
-RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE=$(find "$ORCHARD_SHARED_RUNNER_SETUP" -name 'actions-runner-osx-arm64-*.tar.gz')
+RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE=$(find "$ORCHARD_SHARED_RUNNER_SETUP" -name 'actions-runner-osx-arm64-*.tar.gz' || true)
 ORCHARD_ADMIN_PRE_RUN_SCRIPT="$ORCHARD_SHARED_RUNNER_SETUP"/pre-run-admin.sh
 
 if [ "${RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE:-}" != "" ] && [ -f "$RUNNER_CUSTOM_ACTIONS_RUNNER_PACKAGE" ]; then
