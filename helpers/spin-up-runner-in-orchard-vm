@@ -26,6 +26,7 @@ mkdir -p "$runner_home"
 ORCHARD_SHARED_HOST_DIR="/Volumes/My Shared Files"
 ORCHARD_SHARED_RUNNER_SETUP="$ORCHARD_SHARED_HOST_DIR"/orchard-runner-setup
 RUNNER_PRE_RUN_SCRIPT="$ORCHARD_SHARED_RUNNER_SETUP"/pre-run-runner.sh
+RUNNER_POST_GUI_SCRIPT="$ORCHARD_SHARED_RUNNER_SETUP"/post-gui-runner.sh
 
 if [ -f "$RUNNER_PRE_RUN_SCRIPT" ]; then
     sudo -u "$user" cp "$RUNNER_PRE_RUN_SCRIPT" "$runner_home"/pre-run
@@ -46,6 +47,11 @@ if [ "$user" != "admin" ]; then
     password="password"
 else
     password="admin"
+fi
+
+if [ -f "$RUNNER_POST_GUI_SCRIPT" ]; then
+    sudo -u "$user" cp "$RUNNER_POST_GUI_SCRIPT" "$runner_home"/post-gui
+    sudo -u "$user" env HOME="$runner_home" "$runner_home"/post-gui
 fi
 
 sudo cp -pR actions-runner.dist "$runner_home"/actions-runner
