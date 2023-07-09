@@ -82,17 +82,6 @@ sudo -u "$user" "$runner_home"/actions-runner/config.sh \
 #   xcodebuild failing without much diagnostics with exit status 70 soon after
 #   start.
 #
-expect="ssh-actions_$runner_name.expect"
-cat >"$expect" <<EOF
-spawn ssh -o "StrictHostKeyChecking=no" "$user@localhost" env PATH="$PATH" "$runner_home/actions-runner/run.sh"
-expect "Password:"
-send "$password\\n"
-set timeout 60
-expect "Listening for Jobs"
-expect "Runner update in progress, do not shutdown runner."
-expect "Listening for Jobs"
-EOF
-
-cat "$expect"
-
-expect -f "$expect"
+sshpass -p "$password" ssh-copy-id -o "StrictHostKeyChecking=no" "$user@localhost"
+ssh -o "StrictHostKeyChecking=no" "$user@localhost" env PATH="$PATH" "$runner_home/actions-runner/run.sh" 2>&1 &
+disown
