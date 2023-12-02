@@ -57,9 +57,9 @@ All options should be set through environment variables below.
 
 ### Known to work
 
--   [Orchard](https://github.com/cirruslabs/orchard): version 0.7.0-60e564d
--   [Tart](https://tart.run): 1.5.0
--   (Host) macOS: 13.4
+-   [Orchard](https://github.com/cirruslabs/orchard): version 0.15.0-969f0bd
+-   [Tart](https://tart.run): 2.4.1
+-   (Host) macOS: 14.1.2
 -   Xcode: 14.3
 
 ### Thanks
