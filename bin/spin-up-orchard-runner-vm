@@ -68,12 +68,4 @@ while ! orchard ssh vm "$clone" "test -f $spawn_log"; do
     sleep 1
 done
 
-(
-    echo $$
-    orchard ssh vm "$clone" "tail -f $spawn_log"
-) |
-    (
-        read -r pid
-        awk "/$end_marker/ { exit } { print }"
-        kill "$pid"
-    )
+sed "/$end_marker/q" < <(orchard ssh vm "$clone" "tail -f $spawn_log" || true)
