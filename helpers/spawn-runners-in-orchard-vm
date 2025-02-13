@@ -49,7 +49,7 @@ fi
 
 # Make sure VNC viewer does not ask about the EULA.
 mkdir -p ~/.vnc/config.d
-echo 'EulaAccepted=e9afb455678129385e7b56353af525d360097b40' >~/.vnc/config.d/vncviewer
+echo 'EulaAccepted=59cfcff78382c5c8bc31a98fc50f6f4737383996' >~/.vnc/config.d/vncviewer
 echo 'localhost::5900/extra=1e01' >~/.vnc/identities
 
 # Make admin group passwordless.
