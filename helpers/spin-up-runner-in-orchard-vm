@@ -33,6 +33,29 @@ if [ -f "$RUNNER_PRE_RUN_SCRIPT" ]; then
     sudo -u "$user" env HOME="$runner_home" "$runner_home"/pre-run
 fi
 
+sw_vers=$(sw_vers -productVersion)
+sw_build=$(sw_vers -buildVersion)
+
+sudo -u "$user" defaults write com.apple.SetupAssistant LastSeenCloudProductVersion "${sw_vers}"
+sudo -u "$user" defaults write com.apple.SetupAssistant LastSeenBuddyBuildVersion "${sw_build}"
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeeAccessibility -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeeActivationLock -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeeAppStore -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeeAppearanceSetup -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeeApplePaySetup -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeeCloudSetup -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeeLockdownMode -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeePrivacy -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeeScreenTime -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeeSiriSetup -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeeSyncSetup -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeeSyncSetup2 -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeeTermsOfAddress -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeeTouchIDSetup -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant DidSeeiCloudLoginForStorageServices -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant SkipExpressSettingsUpdating -bool YES
+sudo -u "$user" defaults write com.apple.SetupAssistant SkipFirstLoginOptimization -bool YES
+
 if [ "$user" != "admin" ]; then
     # Hide the user from the login window.
     sudo dscl . create "$runner_home" IsHidden 1
