@@ -36,5 +36,7 @@ while true; do
     fi
 done
 
+sendkeys -p $vnc_viewer_pid --characters "password<c:return>"
+
 # Kill the viewer as it's no longer needed.
 kill "$vnc_viewer_pid"

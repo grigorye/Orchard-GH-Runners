@@ -57,6 +57,8 @@ sudo sh -c "echo '%admin ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/admin-group-n
 
 # Install VNC viewer and x11vnc, required for enabling GUI session.
 brew install vnc-viewer x11vnc
+# Install sendkeys, required for sending keystrokes to GUI session.
+brew install socsieng/tap/sendkeys
 
 # Install ssh-pass.
 brew install esolitos/ipa/sshpass
