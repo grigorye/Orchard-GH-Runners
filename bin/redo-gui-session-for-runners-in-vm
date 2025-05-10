@@ -1,0 +1,21 @@
+#! /bin/bash
+
+set -x
+set -euo pipefail
+
+vm="$1"
+shift
+
+repo="$1"
+shift
+
+ssh_vm() {
+    quoted_args=$(printf "'%q' " "$@")
+    orchard ssh vm "$vm" "bash -lc '$quoted_args'"
+}
+
+for i in $(seq 4); do
+    user_prefix=$(echo "$repo" | tr '/' '-')
+    user="runner-$user_prefix-$i"
+    ssh_vm env USER="$user" ./r/helpers/enable-gui-session
+done
