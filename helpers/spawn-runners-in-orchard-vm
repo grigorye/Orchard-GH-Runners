@@ -1,4 +1,5 @@
-#! /bin/bash
+#! /usr/bin/env -S stdbuf -oL -eL /bin/bash
+# shellcheck shell=bash
 
 set -x
 set -euo pipefail
