@@ -69,3 +69,5 @@ while ! orchard ssh vm "$clone" "test -f $spawn_log"; do
 done
 
 sed "/$end_marker/q" < <(orchard ssh vm "$clone" "tail -f $spawn_log" || true)
+
+echo "$clone"
