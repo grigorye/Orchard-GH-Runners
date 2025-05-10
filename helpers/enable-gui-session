@@ -31,7 +31,7 @@ vnc_viewer_pid=$!
 user_id=$(id -u "$user")
 while true; do
     sleep 1
-    if sudo launchctl print gui/"$user_id"; then
+    if sudo launchctl print gui/"$user_id" >/dev/null; then
         break
     fi
 done
