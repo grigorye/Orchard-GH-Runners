@@ -17,5 +17,7 @@ ssh_vm() {
 for i in $(seq 4); do
     user_prefix=$(echo "$repo" | tr '/' '-')
     user="runner-$user_prefix-$i"
-    ssh_vm env USER="$user" ./r/helpers/enable-gui-session
+    ssh_vm env USER="$user" ./r/helpers/enable-gui-session >/dev/null &
 done
+
+wait
