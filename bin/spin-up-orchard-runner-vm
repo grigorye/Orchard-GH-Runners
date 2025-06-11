@@ -37,6 +37,8 @@ set -euo pipefail
 
 git clone https://github.com/grigorye/Orchard-GH-Runners r
 
+brew install coreutils
+
 env \\
     RUNNERS_PER_REPO="$runners_per_repo" \\
     RUNNER_LABELS="$labels" \\
