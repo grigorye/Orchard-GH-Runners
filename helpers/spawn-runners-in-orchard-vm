@@ -1,4 +1,4 @@
-#! /usr/bin/env -S stdbuf -oL -eL /bin/bash
+#! /usr/bin/env -S unbuffer /bin/bash
 # shellcheck shell=bash
 
 set -x
