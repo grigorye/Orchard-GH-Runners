@@ -66,7 +66,7 @@ if [ "$user" != "admin" ]; then
     # Make the user an admin.
     sudo dseditgroup -o edit -a "$user" -t user admin
 
-    sudo -u "$user" sysadminctl -screenLock off -password password
+    sudo -u "$user" sysadminctl -screenLock off -password password || true
     "$wd"/enable-gui-session
     password="password"
 else
