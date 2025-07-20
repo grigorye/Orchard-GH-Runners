@@ -14,7 +14,7 @@ ssh_vm() {
     orchard ssh vm "$vm" "bash -lc '$quoted_args'"
 }
 
-for i in $(seq 4); do
+for i in $(seq "${RUNNERS_PER_REPO:-4}"); do
     user_prefix=$(echo "$repo" | tr '/' '-')
     user="runner-$user_prefix-$i"
     ssh_vm env USER="$user" ./r/helpers/enable-gui-session >/dev/null &
