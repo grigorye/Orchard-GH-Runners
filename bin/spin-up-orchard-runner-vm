@@ -13,6 +13,7 @@ variant="${ORCHARD_MACOS_VARIANT:-sonoma-xcode:15.4}"
 labels="${RUNNER_LABELS:+$RUNNER_LABELS,}@$(date +%Y%m%d-%H%M)"
 runners_per_repo="${RUNNERS_PER_REPO:-4}"
 cpu_count="${ORCHARD_CPU_COUNT:-6}"
+memory_gb="${ORCHARD_MEMORY_GB:-16}"
 
 [ -n "$RUNNER_CFG_PAT" ] || [ -n "$RUNNER_CFG_TOKEN" ]
 
@@ -60,6 +61,7 @@ cat "$startup_script"
 
 orchard create vm \
     --cpu "$cpu_count" \
+    --memory $((memory_gb * 1024)) \
     --restart-policy OnFailure \
     --image "$base_image" \
     --startup-script "@$startup_script" \
