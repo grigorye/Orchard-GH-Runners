@@ -4,6 +4,10 @@
 set -x
 set -euo pipefail
 
+export HOMEBREW_NO_ENV_HINTS=1
+export HOMEBREW_NO_INSTALL_UPGRADE=1
+export HOMEBREW_NO_ASK=1
+
 labels="$RUNNER_LABELS"
 gh_domain="${RUNNER_GH_DOMAIN:-github.com}"
 repos=($REPOS)
