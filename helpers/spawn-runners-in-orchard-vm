@@ -61,11 +61,7 @@ echo 'localhost::5900/extra=1e01' >~/.vnc/identities
 sudo sh -c "echo '%admin ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/admin-group-nopassword"
 
 # Install VNC viewer and x11vnc, required for enabling GUI session.
-brew install x11vnc
-
-# As a workaround for vnc-viewer broken in Homebrew, download and install the official RealVNC Connect Viewer package.
-curl -L -o /tmp/RealVNC-Connect-Viewer-8.5.0-MacOSX-universal.pkg https://downloads.realvnc.com/download/file/realvnc-connect-viewer/RealVNC-Connect-Viewer-8.5.0-MacOSX-universal.pkg
-sudo installer -pkg /tmp/RealVNC-Connect-Viewer-8.5.0-MacOSX-universal.pkg -target /
+brew install tiger-vnc x11vnc
 
 # Install sendkeys, required for sending keystrokes to GUI session.
 brew install socsieng/tap/sendkeys
